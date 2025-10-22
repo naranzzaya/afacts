@@ -59,3 +59,17 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+# аутентификация
+gem 'devise'
+
+# загрузка картинок
+gem 'carrierwave', '~> 3.0'
+
+# авторизация (права доступа)
+gem 'cancancan', '~> 3.5'
+
+# dev: просмотр писем в браузере
+group :development do
+  gem 'letter_opener'
+end

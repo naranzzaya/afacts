@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  slug: MyString
+  body: MyText
+  kind: 1
+  category: 1
+  reading_time_min: 1
+  status: 1
+  user: one
+
+two:
+  title: MyString
+  slug: MyString
+  body: MyText
+  kind: 1
+  category: 1
+  reading_time_min: 1
+  status: 1
+  user: two

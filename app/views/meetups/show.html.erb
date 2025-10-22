@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @meetup %>
+
+<div>
+  <%= link_to "Edit this meetup", edit_meetup_path(@meetup) %> |
+  <%= link_to "Back to meetups", meetups_path %>
+
+  <%= button_to "Destroy this meetup", @meetup, method: :delete %>
+</div>

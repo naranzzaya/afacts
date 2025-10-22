@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Community posts" %>
+
+<h1>Community posts</h1>
+
+<div id="community_posts">
+  <% @community_posts.each do |community_post| %>
+    <%= render community_post %>
+    <p>
+      <%= link_to "Show this community post", community_post %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New community post", new_community_post_path %>

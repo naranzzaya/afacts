@@ -1,0 +1,11 @@
+<% content_for :title, "New community post" %>
+
+<h1>New community post</h1>
+
+<%= render "form", community_post: @community_post %>
+
+<br>
+
+<div>
+  <%= link_to "Back to community posts", community_posts_path %>
+</div>
