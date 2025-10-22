@@ -1,9 +1,11 @@
 class CommunityPostsController < ApplicationController
-  before_action :set_community_post, only: %i[ show edit update destroy ]
+  load_and_authorize_resource
+
+  before_action :authenticate_user!, except: %i[index show]
 
   # GET /community_posts
   def index
-    @community_posts = CommunityPost.all
+    @community_posts = CommunityPost.visible.order(created_at: :desc)
   end
 
   # GET /community_posts/1
@@ -12,7 +14,6 @@ class CommunityPostsController < ApplicationController
 
   # GET /community_posts/new
   def new
-    @community_post = CommunityPost.new
   end
 
   # GET /community_posts/1/edit
@@ -21,38 +22,35 @@ class CommunityPostsController < ApplicationController
 
   # POST /community_posts
   def create
-    @community_post = CommunityPost.new(community_post_params)
+    # подмешиваем user_id текущего пользователя
+    @community_post.user = current_user
 
     if @community_post.save
-      redirect_to @community_post, notice: "Community post was successfully created."
+      redirect_to @community_post, notice: "Пост опубликован"
     else
-      render :new, status: :unprocessable_content
+      render :new, status: :unprocessable_entity
     end
   end
 
   # PATCH/PUT /community_posts/1
   def update
     if @community_post.update(community_post_params)
-      redirect_to @community_post, notice: "Community post was successfully updated.", status: :see_other
+      redirect_to @community_post, notice: "Пост обновлён"
     else
-      render :edit, status: :unprocessable_content
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /community_posts/1
   def destroy
     @community_post.destroy!
-    redirect_to community_posts_path, notice: "Community post was successfully destroyed.", status: :see_other
+    redirect_to community_posts_path, notice: "Пост удалён"
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_community_post
-      @community_post = CommunityPost.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def community_post_params
-      params.expect(community_post: [ :user_id, :title, :body, :post_type, :status ])
-    end
+  def community_post_params
+    params.require(:community_post)
+          .permit(:title, :body, :post_type, :status, { media: [] })
+  end
 end

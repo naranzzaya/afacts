@@ -1,0 +1,17 @@
+<h1>VFX Media</h1>
+
+<h2>Учебник — уроки</h2>
+<%= render "articles/list", articles: @lesson_previews %>
+
+<h2>Статьи</h2>
+<%= render "articles/list", articles: @article_previews %>
+
+<h2>Галерея</h2>
+<%= render "community_posts/list", posts: @gallery_previews %>
+
+<h2>Митапы</h2>
+<% @meetups.each do |m| %>
+<div>
+    <%= link_to m.title, m %> — <%= l m.starts_at, format: :short %>
+</div>
+<% end %>

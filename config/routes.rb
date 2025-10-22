@@ -1,19 +1,34 @@
 Rails.application.routes.draw do
-  resources :meetups
-  resources :comments
-  resources :community_posts
-  resources :articles
+  root "home#index"
+  get "about", to: "home#about"
+
   devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
+  resources :articles do
+    collection do
+      get :lessons
+      get :catalog
+    end
+  end
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  resources :dictionary_terms, only: [:index, :show]
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  resources :quizzes
+  resources :quiz_questions
+  resources :quiz_choices
+  resources :quiz_attempts
+  resources :quiz_answers
+
+  resources :community_posts do
+    resources :comments, only: [:create]
+    resources :votes, only: [:create]
+    collection do
+      get :gallery     # фильтр post_type=gallery
+      get :questions   # фильтр post_type=question
+    end
+  end
+
+  resources :meetups, only: [:index, :show]
+
+  resources :portfolio_items
 end

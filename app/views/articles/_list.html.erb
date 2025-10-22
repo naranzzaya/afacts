@@ -1,0 +1,6 @@
+<% articles.each do |a| %>
+<article>
+    <h3><%= link_to a.title, a %></h3>
+    <p><%= a.kind %> · <%= a.category %> · <%= a.created_at.to_date %></p>
+</article>
+<% end %>

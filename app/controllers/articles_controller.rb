@@ -1,9 +1,19 @@
 class ArticlesController < ApplicationController
   before_action :set_article, only: %i[ show edit update destroy ]
 
-  # GET /articles
+  # GET /articles  — каталог обычных статей
   def index
-    @articles = Article.all
+    @articles = Article.published.article.order(created_at: :desc)
+  end
+
+  # GET /articles/lessons — список уроков (учебник)
+  def lessons
+    @articles = Article.published.lesson.order(created_at: :desc)
+  end
+
+  # GET /articles/catalog — альтернативный алиас для каталога статей
+  def catalog
+    @articles = Article.published.article.order(created_at: :desc)
   end
 
   # GET /articles/1
@@ -21,12 +31,12 @@ class ArticlesController < ApplicationController
 
   # POST /articles
   def create
-    @article = Article.new(article_params)
+    @article = Article.new(article_params) # Вариант B: без автора
 
     if @article.save
       redirect_to @article, notice: "Article was successfully created."
     else
-      render :new, status: :unprocessable_content
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -35,7 +45,7 @@ class ArticlesController < ApplicationController
     if @article.update(article_params)
       redirect_to @article, notice: "Article was successfully updated.", status: :see_other
     else
-      render :edit, status: :unprocessable_content
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -46,13 +56,13 @@ class ArticlesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_article
-      @article = Article.find(params.expect(:id))
+      @article = Article.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
+    # Вариант B: без user_id
     def article_params
-      params.expect(article: [ :title, :slug, :body, :kind, :category, :reading_time_min, :status, :user_id ])
+      params.require(:article).permit(:title, :slug, :body, :kind, :category, :reading_time_min, :status)
     end
 end
