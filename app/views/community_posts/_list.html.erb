@@ -1,0 +1,6 @@
+<% posts.each do |p| %>
+<article>
+    <h3><%= link_to p.title, p %></h3>
+    <p>Автор: <%= p.user.username || p.user.email %></p>
+</article>
+<% end %>

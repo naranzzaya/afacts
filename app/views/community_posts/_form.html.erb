@@ -1,42 +1,15 @@
-<%= form_with(model: community_post) do |form| %>
-  <% if community_post.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(community_post.errors.count, "error") %> prohibited this community_post from being saved:</h2>
+<%= form_with(model: community_post, html: { multipart: true }) do |f| %>
+<%= f.label :title %>
+<%= f.text_field :title %>
 
-      <ul>
-        <% community_post.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= f.label :body %>
+<%= f.text_area :body %>
 
-  <div>
-    <%= form.label :user_id, style: "display: block" %>
-    <%= form.text_field :user_id %>
-  </div>
+<%= f.label :post_type %>
+<%= f.select :post_type, CommunityPost.post_types.keys %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
+<%= f.label :media, "Изображения/видео" %>
+<%= f.file_field :media, multiple: true %>
 
-  <div>
-    <%= form.label :body, style: "display: block" %>
-    <%= form.textarea :body %>
-  </div>
-
-  <div>
-    <%= form.label :post_type, style: "display: block" %>
-    <%= form.number_field :post_type %>
-  </div>
-
-  <div>
-    <%= form.label :status, style: "display: block" %>
-    <%= form.number_field :status %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+<%= f.submit %>
 <% end %>
